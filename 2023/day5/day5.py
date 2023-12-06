@@ -1,3 +1,5 @@
+import time
+
 def map(t, x):
     for dst, src, n in t:
         if src <= x <src+n:
@@ -20,6 +22,7 @@ def mapping(t, r):
 
 
 if __name__ == '__main__':
+    start = time.time()
     seed, *others = open('5.txt').read().split('\n\n')
     seed = [int(x) for x in seed.split(':')[1].split()]
 
@@ -31,10 +34,12 @@ if __name__ == '__main__':
     print(min(p1))
 
     p2 = []
-    for m, n in list(zip(seed[::2], seed[1::2])):
+    for m, n in zip(seed[::2], seed[1::2]):
         x = [(m, m+n)]
         for pt in others:
             x = mapping([[int(x) for x in line.split()] for line in pt.split('\n')[1:]], x)
         p2.append(min(x))
     print(min(p2)[0])
+
+    print("time elapsed: ", time.time()-start)
 
