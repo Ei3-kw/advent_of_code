@@ -1,7 +1,7 @@
-lines = open('7.txt').readlines()
+*lines, = open('7.txt')
 
 # pt1
-rank = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
+rank = 'AKQJT98765432'
 meow = []
 for l in lines:
     h, b = map(str.strip, l.split())
@@ -15,7 +15,7 @@ for l in lines:
 print(sum((i + 1) * values[-1] for i, values in enumerate(sorted(meow))))
 
 # pt2
-rank = ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J']
+rank = 'AKQT98765432J'
 meow = []
 for l in lines:
     h, b = map(str.strip, l.split())

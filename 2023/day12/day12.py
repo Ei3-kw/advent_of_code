@@ -6,12 +6,12 @@ start = time()
 *lines, = open('12.txt')
 
 C = cache(lambda l,r: r \
-    and (c:=r[0]) \
+    and (t:=r[0]) \
     and ~sum(
-        ~C(l[i+c+1:], r[1:]) 
-            for i in range(len(l)-c+1) 
-                if {'#'} - {l[i+c: i+c+1], *l[:i]}
-                    and {'.'} - {*l[i:i+c]}) \
+        ~C(l[i+t+1:], r[1:]) 
+            for i in range(len(l)-t+1) 
+                if {'#'} - {l[i+t: i+t+1], *l[:i]}
+                    and {'.'} - {*l[i:i+t]}) \
     or ~('#'in l)^1)
 
 for n in 1, 5:

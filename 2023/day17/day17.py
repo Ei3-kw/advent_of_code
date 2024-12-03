@@ -1,41 +1,60 @@
-data = open("17.txt", "r").read().splitlines()
+# *lines, = open('16.txt')
 
-from heapq import heappush,heappop
+DIR = [-1, 1j, 1, -1j]
 
-def genNeighbours(node,data,ultra):
-    x,y,v,dir = node
-    dx,dy = dir
-    left,right = (-dy,dx),(dy,-dx)
-    if v < (10 if ultra else 3) and 0<=x+dx<len(data) and 0<=y+dy<len(data[0]):
-        yield (x+dx,y+dy,v+1,dir), int(data[x+dx][y+dy])
-    for dx,dy in left,right:
-        if 0<=x+dx<len(data) and 0<=y+dy<len(data[0]) and (not ultra or v > 3):
-            yield (x+dx,y+dy,1,(dx,dy)), int(data[x+dx][y+dy])
-    
-    
+g = {complex(i,j): c for j, r in enumerate(open('17.txt'))
+                     for i, c in enumerate(r.strip())}
 
-def pathfind(data,ultra):
-    Q_visited = set()
-    start1,start2 = (0,0,0,(1,0)),(0,0,0,(0,1))
-    dist = {start1:0,start2:0}
-    Q = [(0,start1),(0,start2)]
-    target = (len(data)-1,len(data[0])-1)
-    while len(Q):
-        _,u = heappop(Q)
-        if u in Q_visited: 
-            continue #Outdated entry
-        Q_visited.add(u)
-        if u[:2] == target and (not ultra or u[2] > 3):
-            target = u
+dst = list(g.keys())[-1]
+
+def fn(todo):
+    done = []
+    total_cost = -int(todo[0][1])
+    dirs = []
+    while todo:
+        pos, cost = todo.pop()
+        loss = int(cost)
+        cost = loss + norm(pos-list(g.keys())[-1])
+        print(pos)
+
+        if pos == dst:
             break
-        for v,cost in genNeighbours(u,data,ultra):
-            if v in Q_visited: 
-                continue
-            alt = dist[u] + cost
-            if v not in dist or alt < dist[v]:              
-                dist[v] = alt
-                heappush(Q,(alt,v))
-    print(dist[target])
 
-pathfind(data,False)
-pathfind(data,True)
+        while not (pos, cost) in done:
+            l = [pos-1,pos+1j,pos+1,pos-1j]
+            total_cost += cost
+            if len(done) > 0:
+                dirs.append(pos-done[-1][0])
+            done.append((pos, cost))
+            for i in range(4):
+                if l[i] in g:
+                    try:
+                        if DIR[i-2] != dirs[-1] and not (DIR[i] == dirs[-1] == dirs[-2]):
+                            todo.append((l[i], g[l[i]]))
+                    except IndexError:
+                        dirs.append(DIR[i])
+                        todo.append((l[i], g[l[i]]))
+
+
+
+    return total_cost 
+
+
+
+
+
+                
+
+            
+
+
+print(fn([(0, 0)]))
+
+
+
+
+# print(max(map(fn, ([(pos-dir, dir)] for dir in (1,1j,-1,-1j)
+                        # for pos in g if pos-dir not in g))))
+
+
+

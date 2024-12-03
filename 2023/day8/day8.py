@@ -1,5 +1,5 @@
 import numpy as np
-d, _, *lines = open('8.txt').readlines()
+d, _, *lines = open('8.txt')
 
 meow = {k: v.strip()[1:-1].split(', ') for k, v in (l.split(' = ') for l in lines)}
 
@@ -26,5 +26,3 @@ for b, a in enumerate(current):
                 a = meow[a][0] if c == 'L' else meow[a][1]
 
 print(np.lcm.reduce(i[i != 0]))
-
-
